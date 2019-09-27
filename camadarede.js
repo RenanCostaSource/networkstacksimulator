@@ -1,16 +1,16 @@
-function newCamadaRede(){
+function newCamadaRede(ip,mask){
     var obj;
     obj.arp =[];
-    obj.sendARP=function(ip){
+    obj.sendARP=function(whatip){
 
     };
 
-    obj.sendToIP=function(ip,data){
+    obj.sendToIP=function(toip,data){
 
     };
 
-    obj.routing = function(ip,data){
+    obj.routing = function(toip,data){
 
     }
     return obj;
-}
+};

@@ -1,6 +1,7 @@
-function newCamadaEnlace(mac){
+function newCamadaEnlace(mac,meio){
     var obj;
     obj.mac = mac;
+    obj.camadafisica = newCamadaFisica(meio);
     obj.csma= function(mac,data){
 
     };
@@ -10,4 +11,4 @@ function newCamadaEnlace(mac){
     };
 
     return obj;
-}
+};

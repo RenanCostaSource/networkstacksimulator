@@ -1,6 +1,6 @@
 
 
-function newCamadaFisica(){
+function newCamadaFisica(meio){
 var obj;
 
 obj.isMeioOcupado= function(){
