@@ -10,9 +10,11 @@ obj.isMeioOcupado= function(){
 obj.Transmitir = function(data){
 if(meiosFisicos[meio].ocupado){
     meiosFisicos[meio].colisao=true;
+    return false;
 }else{
     meiosFisicos[meio].transmissao=data;
     meiosFisicos[meio].ocupado=true;
+    return true;
 }
 };
 
