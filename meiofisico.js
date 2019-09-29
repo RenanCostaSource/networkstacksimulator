@@ -1,11 +1,5 @@
 
 function newMeioFisico(){ //construtor
-var obj;
-obj.ocupado = false;
-obj.colisao = false;
-obj.transmissao = "";
-
-
-
+var obj={ocupado:false,colisao:false,transmissao:""};
 return obj;
 };

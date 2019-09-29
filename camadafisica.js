@@ -1,7 +1,7 @@
 
 
 function newCamadaFisica(meio){
-var obj;
+var obj={isMeioOcupado:null,Transmitir:null,Receber:null};
 
 obj.isMeioOcupado= function(){
    return meiosFisicos[meio].ocupado;

@@ -1,5 +1,5 @@
 function newCamadaRede(ip,mask){
-    var obj;
+    var obj={};
     obj.arp =[];
     obj.sendARP=function(whatip){
 

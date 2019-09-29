@@ -1,5 +1,5 @@
 function newComputer(mac,ip,mask,meio){
-    var obj;
+    var obj={};
     
     obj.camadaenlace = newCamadaEnlace(mac,meio);
     obj.camadarede = newCamadaRede(ip,mask);
