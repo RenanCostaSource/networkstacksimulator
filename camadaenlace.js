@@ -54,7 +54,24 @@ function newCamadaEnlace(mac,meio){
     obj.data4Me = function(){
         var recebe= obj.camadafisica.Receber();
         if(recebe.substring(0,3).equals(obj.mac)){
+            var totalPackets=recebe.charAt(12);
+            if('0'===totalPackets){
+                return recebe;
+            }else{
+                if(this.receivebuffer.length<totalPackets){
+                    this.receivebuffer.push(recebe);
+                    return 1;
+                }else{
+                    var packagesData = obj.joinPackages()
+                    this.receivebuffer=[];
+                    return packagesData;
+                }
+            }
 
+
+
+        }else{
+            return null;
         }
     };
 
@@ -74,13 +91,14 @@ function newCamadaEnlace(mac,meio){
         for(var i=0;i<this.receivebuffer.length;i++){
            fulldata+=this.receivebuffer[i].substring(14,this.receivebuffer[i].length);
         }
-        fulldata=fulldata.substring(0,fulldata.indexOf("|"));
+        return fulldata=fulldata.substring(0,fulldata.indexOf("|"));
         console.log(fulldata);
 
     }
 
     obj.createHeader = function(mac,packetnumber,lastpacketnumber,data){
         return mac+"|"+obj.mac+"|"+packetnumber+"|"+lastpacketnumber+"|"+data;
+//char indexes: 0-3 4  5-8      9    10          11       12         13    14-$
     };
 
     return obj;
