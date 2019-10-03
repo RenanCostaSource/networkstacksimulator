@@ -5,7 +5,7 @@ function newCamadaEnlace(mac,meio){
     obj.camadafisica = newCamadaFisica(meio);
     obj.buffer=[];
     obj.receivebuffer=[];
-    
+    obj.numpackets=null;
     
     var packetsize=20;
     obj.csma= function(mac,data){
@@ -35,44 +35,61 @@ function newCamadaEnlace(mac,meio){
             obj.buffer.push(obj.createHeader(mac,packets,packets,lastpacket));
 
         }
-        obj.receivebuffer=obj.buffer;
-        this.joinPackages();
+        
+        console.log("buffer to send");
+        console.log(obj.buffer);
         //obj.csmaStep();
     };
     obj.csmaStep= function(){
-
+      if(obj.buffer.length>0){
          if(!obj.camadafisica.isMeioOcupado()&&obj.retardo===0){
-             obj.camadafisica.Transmitir(obj.buffer.shift());
+
+             var transmitindo =obj.buffer.shift();
+             console.log("pacote enviado: "+transmitindo);
+             obj.camadafisica.Transmitir(transmitindo);
              obj.retardo=0;
          }else if(obj.retardo===0){
-             obj.retardo=getRandomInt(1,10);
+            // obj.retardo=getRandomInt(1,10);
+            obj.retardo=1;
          }else{
              obj.retardo--;
          }
+        }
      };
 
     obj.data4Me = function(){
         var recebe= obj.camadafisica.Receber();
-        if(recebe.substring(0,3).equals(obj.mac)){
-            var totalPackets=recebe.charAt(12);
-            if('0'===totalPackets){
+        
+        if(obj.numpackets&&obj.numpackets===""+obj.receivebuffer.length){
+            
+            var packagesData = obj.joinPackages()
+            this.receivebuffer=[];
+            return packagesData;
+        }
+        if(recebe){
+        if(recebe.substring(0,recebe.indexOf("|"))===obj.mac){
+            console.log("chegou pacote para mim\n meus pacotes:");
+            
+
+            obj.numpackets=recebe.charAt(12);
+            if('0'===obj.numpackets){
                 return recebe;
             }else{
-                if(this.receivebuffer.length<totalPackets){
+                if(this.receivebuffer.length<obj.numpackets){
                     this.receivebuffer.push(recebe);
+                    console.log(obj.receivebuffer);
                     return 1;
-                }else{
-                    var packagesData = obj.joinPackages()
-                    this.receivebuffer=[];
-                    return packagesData;
-                }
+               
             }
 
 
 
-        }else{
+        }
             return null;
         }
+    }
+    
+    return null;
     };
 
     obj.joinPackages=function(){
@@ -91,8 +108,10 @@ function newCamadaEnlace(mac,meio){
         for(var i=0;i<this.receivebuffer.length;i++){
            fulldata+=this.receivebuffer[i].substring(14,this.receivebuffer[i].length);
         }
-        return fulldata=fulldata.substring(0,fulldata.indexOf("|"));
-        console.log(fulldata);
+        obj.numpackets=null;
+        fulldata=fulldata.substring(0,fulldata.lastIndexOf("|"));
+        return fulldata;
+        
 
     }
 

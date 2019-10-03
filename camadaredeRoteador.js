@@ -1,4 +1,4 @@
-function newCamadaRede(ip,mask,ARP){
+function newCamadaRedeRouter(ip,mask,ARP){
     var obj={};
     obj.myIp = ip;
     obj.myMask = mask;
@@ -6,20 +6,16 @@ function newCamadaRede(ip,mask,ARP){
     obj.route =[];
     obj.route.push(getNetIp(ip,mask)+"|"+ip);
     obj.arp=ARP;
-    obj.somethingToSend={mac:"",data:"",yes:false};
     obj.sendARP=function(whatip){
 
     };
 
-    obj.sendToIP=function(toip,maskto,data){
-        if(getNetIp(toip,maskto)===obj.myNet){
+    obj.sendToIP=function(toip,mask,data){
+        if(getNetIp(toip,mask)===obj.myNet){
             var toMac= obj.getMac(toip);
-            obj.somethingToSend.mac=toMac;
-            obj.somethingToSend.data=this.createHeader(toip,maskto,data);
-            obj.somethingToSend.yes=true;
-            console.log("sending: " +obj.somethingToSend.data+"to mac:"+obj.somethingToSend.mac);
+            console.log(toMac);
         }else{
-            console.log("no gateway");
+            console.log("no Arp");
         }
     };
 
@@ -35,10 +31,6 @@ function newCamadaRede(ip,mask,ARP){
 
     obj.routing = function(toip,data){
 
-    }
-
-    obj.createHeader = function(toip,maskto,data){
-        return toip+"|"+maskto+"|"+obj.myIp+"|"+obj.myMask+"|"+data;
     }
 
     obj.receive = function(data){
@@ -58,9 +50,8 @@ function newCamadaRede(ip,mask,ARP){
 
     getNetIp(ipFinal,maskFinal);
     getNetIp(ipOrigem,maskOrigem);
-console.log("recebi na camada de rede");
-console.log("ip origem "+ipOrigem+" mascara de rede Origem"+maskOrigem +" rede Origem:"+getNetIp(ipOrigem,maskOrigem));
-console.log("data: "+data);
+
+
 
     }
     return obj;

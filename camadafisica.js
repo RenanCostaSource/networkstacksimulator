@@ -2,7 +2,7 @@
 
 function newCamadaFisica(meio){
 var obj={isMeioOcupado:null,Transmitir:null,Receber:null};
-
+obj.ultimatransmissao="";//para evitar transmissoes duplicadas
 obj.isMeioOcupado= function(){
    return meiosFisicos[meio].ocupado;
 };
@@ -14,12 +14,16 @@ if(meiosFisicos[meio].ocupado){
 }else{
     meiosFisicos[meio].transmissao=data;
     meiosFisicos[meio].ocupado=true;
+    meiosFisicos[meio].life=1;
     return true;
 }
 };
 
 obj.Receber= function(){
- return meiosFisicos[meio].transmissao
+    if(meiosFisicos[meio].ocupado&&meiosFisicos[meio].transmissao!==obj.ultimatransmissao){
+        obj.ultimatransmissao=meiosFisicos[meio].transmissao;
+        return meiosFisicos[meio].transmissao;
+}return null;
 }
 return obj;
 };
